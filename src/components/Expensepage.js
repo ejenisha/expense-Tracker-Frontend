@@ -3,7 +3,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import Modal from "./Modal";
 import ExpenseList from "./ExpenseList";
 import axios from "axios";
-
+import Header from "./Header";
 const ExpensePage = () => {
   const [isOpen, setOpen] = useState(false);
   const [expenseList, setExpenseList] = useState([]);
@@ -45,12 +45,14 @@ const ExpensePage = () => {
     }
   };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+  return (<div>
+    <Header/>
+  
+    <div className="flex items-center justify-center min-h-screen bg-amber-200 p-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl h-auto mx-auto">
         <div className="grid grid-cols-2 gap-8">
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="income">
+            <label className="block text-orange-800 text-xl font-bold mb-2" htmlFor="income">
               Income
             </label>
             <input
@@ -58,10 +60,10 @@ const ExpensePage = () => {
               type="text"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
-            <p className="text-right text-xs">Add Income</p>
+            <p className="text-right text-xs text-orange-800">Add Income</p>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="balance">
+            <label className="block text-orange-800 text-xl font-bold mb-2" htmlFor="balance">
               Balance
             </label>
             <input
@@ -71,7 +73,7 @@ const ExpensePage = () => {
             />
           </div>
           <div className="flex space-x-10">
-            <h1 className="text-left">Expenses</h1>
+            <h1 className="text-left text-xl text-orange-800 font-bold">Expenses</h1>
             <AddCircleOutlineOutlinedIcon onClick={() => setOpen(true)} />
           </div>
         </div>
@@ -89,6 +91,7 @@ const ExpensePage = () => {
           />
         )}
       </div>
+    </div>
     </div>
   );
 };

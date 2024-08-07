@@ -48,17 +48,17 @@ const Modal = ({ setOpen, onSave, expense }) => {
             <div className="bg-gray-50 px-4 py-3 h-96">
               <div className="grid grid-cols-2 gap-8">
                 <div>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">Categories</label>
+                  <label className="block text-orange-800 text-sm font-bold mb-2">Categories</label>
                   <Dropdown
                     options={options}
                     onChange={handleSelect}
                     value={selectedCategory}
                     placeholder="Select an option"
-                    className="block w-full px-3 py-2 text-gray-700 placeholder-gray-400 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    className="block w-full px-3 py-2 bg-white text-gray-700 placeholder-gray-400 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">Date</label>
+                  <label className="block text-orange-800 text-sm font-bold mb-2">Date</label>
                   <DatePicker
                     selected={selectedDate}
                     onChange={(date) => setSelectedDate(date)}
@@ -67,7 +67,7 @@ const Modal = ({ setOpen, onSave, expense }) => {
                   />
                 </div>
                 <div>
-                  <label>Description</label>
+                  <label className="block text-orange-800 text-sm font-bold mb-2">Description</label>
                   <textarea
                     rows="4"
                     value={description}
@@ -76,7 +76,7 @@ const Modal = ({ setOpen, onSave, expense }) => {
                   ></textarea>
                 </div>
                 <div>
-                  <label>Amount</label>
+                  <label className="block text-orange-800 text-sm font-bold mb-2">Amount</label>
                   <input
                     type="number"
                     value={amount}
@@ -86,7 +86,7 @@ const Modal = ({ setOpen, onSave, expense }) => {
                 </div>
               </div>
               <div className="flex justify-center items-center mt-10">
-                <button className="h-10 border border-gray-300 w-20 rounded" onClick={postExp}>Save</button>
+                <button className="h-10 border font-bold text-xl  border-gray-300 w-20 rounded bg-amber-200 text-orange-800" onClick={postExp}>Save</button>
               </div>
             </div>
           </div>
