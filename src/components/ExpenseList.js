@@ -1,0 +1,60 @@
+import React from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import CloseIcon from "@mui/icons-material/Close";
+import "./ExpenseList.css";
+import axios from "axios";
+
+const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense }) => {
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  const handleDelete = async (id) => {
+    await axios.delete(`http://localhost:8000/api/v1/exp/${id}`);
+    fetchExpenses();
+  };
+  const total=expenseList.reduce(
+    (sum,item)=>{
+      return sum+=item.amount
+    },0)
+  return (
+    <div>
+      {Array.isArray(expenseList) && expenseList.length > 0 ? (
+        expenseList.map((item, index) => {
+          return (
+            <div
+              key={index}
+              className="bg-gray-200 rounded cardheight grid grid-cols-6 gap-3 justify-center items-center mb-4"
+            >
+              <div>{item.categories}</div>
+              <div>{formatDate(item.date)}</div>
+              <div>{item.description}</div>
+              <div>{item.amount}</div>
+              <div>
+                <EditIcon 
+                  className="cursor-pointer" 
+                  onClick={() => setEditingExpense(item)} 
+                />
+              </div>
+              <div>
+                <CloseIcon 
+                  className="cursor-pointer" 
+                  onClick={() => handleDelete(item._id)} 
+                />
+              </div>
+            </div>
+          );
+        })
+      ) : (
+        <p>No expenses available</p>
+      )}
+     <h2 className="text-right mr-20">Total:  {total}</h2>
+    </div>
+  );
+};
+
+export default ExpenseList;
