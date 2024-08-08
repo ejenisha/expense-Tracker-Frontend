@@ -6,17 +6,29 @@ import Expensepage from './components/Expensepage';
 function App() {
   const [isSignup, setIsSignup] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState(''); // State to store the user's email
+
+  const handleLogin = (userEmail) => {
+    setEmail(userEmail);
+    setIsAuthenticated(true);
+  };
 
   if (isAuthenticated) {
-    return <Expensepage />;
+    return <Expensepage email={email} />;
   }
 
   return (
     <div>
       {isSignup ? (
-        <Signup onSwitch={() => setIsSignup(false)} onLogin={() => setIsAuthenticated(true)} />
+        <Signup
+          onSwitch={() => setIsSignup(false)}
+          onLogin={handleLogin} // Pass handleLogin to update email
+        />
       ) : (
-        <Login onSwitch={() => setIsSignup(true)} onLogin={() => setIsAuthenticated(true)} />
+        <Login
+          onSwitch={() => setIsSignup(true)}
+          onLogin={handleLogin} // Pass handleLogin to update email
+        />
       )}
     </div>
   );

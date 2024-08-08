@@ -4,7 +4,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./ExpenseList.css";
 import axios from "axios";
 
-const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense }) => {
+const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense,email }) => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const day = date.getDate();
@@ -14,7 +15,7 @@ const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense }) => {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8000/api/v1/exp/${id}`);
+    await axios.delete(`http://localhost:8000/api/v1/exp/${id}`,{ headers: { email: email } });
     fetchExpenses();
   };
   const total=expenseList.reduce(
@@ -28,7 +29,7 @@ const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense }) => {
           return (
             <div
               key={index}
-              className="bg-gray-200 rounded cardheight grid grid-cols-6 gap-3 justify-center items-center mb-4"
+              className="bg-amber-200 text-orange-800 text-xl rounded cardheight grid grid-cols-6 gap-3 justify-center items-center mb-4"
             >
               <div>{item.categories}</div>
               <div>{formatDate(item.date)}</div>
@@ -50,9 +51,9 @@ const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense }) => {
           );
         })
       ) : (
-        <p>No expenses available</p>
+        <p className="text-orange-800">No expenses available</p>
       )}
-     <h2 className="text-right mr-20">Total:  {total}</h2>
+     <h2 className="text-right mr-20 text-orange-800 text-xl font-bold">Total:  {total}</h2>
     </div>
   );
 };
