@@ -3,6 +3,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import Modal from "./Modal";
 import ExpenseList from "./ExpenseList";
 import axios from "axios";
+import  Header from "./Header";
 
 const ExpensePage = () => {
   const [isOpen, setOpen] = useState(false);
