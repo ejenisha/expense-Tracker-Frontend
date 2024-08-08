@@ -4,8 +4,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./ExpenseList.css";
 import axios from "axios";
 
-const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense,email }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense, email, handleExpenseUpdate }) => {
+
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const day = date.getDate();
@@ -15,13 +15,13 @@ const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense,email }) =>
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8000/api/v1/exp/${id}`,{ headers: { email: email } });
+    await axios.delete(`http://localhost:8000/api/v1/exp/${id}`, { headers: { email } });
     fetchExpenses();
+    // Update balance after deleting an expense
   };
-  const total=expenseList.reduce(
-    (sum,item)=>{
-      return sum+=item.amount
-    },0)
+
+  const total = expenseList.reduce((sum, item) => sum + item.amount, 0);
+
   return (
     <div>
       {Array.isArray(expenseList) && expenseList.length > 0 ? (
@@ -53,7 +53,7 @@ const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense,email }) =>
       ) : (
         <p className="text-orange-800">No expenses available</p>
       )}
-     <h2 className="text-right mr-20 text-orange-800 text-xl font-bold">Total:  {total}</h2>
+      <h2 className="text-right mr-20 text-orange-800 text-xl font-bold">Total: {total}</h2>
     </div>
   );
 };

@@ -13,7 +13,7 @@ const Signup = ({ onSwitch, onLogin }) => {
       setMessage(response.data.msg);
      
       if (response.data.msg === 'User created successfully') {
-        onLogin(); // Trigger login state
+        onLogin(email); // Trigger login state
       }
     } catch (error) {
       console.error('Signup error:', error);

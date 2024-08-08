@@ -5,7 +5,6 @@ const Login = ({ onSwitch, onLogin }) => {
   const [email, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://localhost:8000/api/v1/user/login', { email, password });
