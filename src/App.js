@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import Expensepage from './components/Expensepage';
-import ExpenseChartPage from './components/ExpenseChartPage';
+import Signup from './components/LoginSignup/Signup';
+import Login from './components/LoginSignup/Login';
+import Expensepage from './components/Expenses/Expensepage';
+import ExpenseChartPage from './components/Charts/ExpenseChartPage';
 
 function App() {
   const [isSignup, setIsSignup] = useState(true);

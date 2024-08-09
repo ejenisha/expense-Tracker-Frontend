@@ -5,12 +5,12 @@ import ExpenseList from "./ExpenseList";
 import axios from "axios";
 import Header from "./Header";
 
-const ExpensePage = ({ email }) => {
+const Expensepage = ({ email }) => {
   const [isOpen, setOpen] = useState(false);
   const [expenseList, setExpenseList] = useState([]);
   const [editingExpense, setEditingExpense] = useState(null);
   const [bal, setBal] = useState(0); // Initialize balance to 0
-  const [income, setIncome] = useState("0");
+  const [income, setIncome] = useState("0"); 
   const [msg, setMsg] = useState(""); // Initialize message state
 
   // Function to fetch expenses and balance from the server
@@ -25,7 +25,10 @@ const ExpensePage = ({ email }) => {
       console.error("Error fetching data:", error.response ? error.response.data : error.message);
     }
   };
-
+  useEffect(() => {
+    console.log("Balance updated to:", bal);
+  }, [bal]);
+  
   useEffect(() => {
     fetchExpenses();
   }, []);
@@ -33,7 +36,7 @@ const ExpensePage = ({ email }) => {
   const handleIncomeChange = (e) => {
     setIncome(e.target.value);
   };
-
+//Adds the income to the balance amount
   const updateBalance = async () => {
     try {
       const incomeAmount = Number(income);
@@ -99,7 +102,7 @@ const ExpensePage = ({ email }) => {
       await axios.patch(`http://localhost:8000/api/v1/exp/${id}`, updatedExpense, { headers: { email } });
 
       // Fetch updated expenses
-      await fetchExpenses();
+      await fetchExpenses(); 
 
       // Calculate new balance
       const total = expenseList.reduce((sum, item) => sum + item.amount, 0);
@@ -119,62 +122,71 @@ const ExpensePage = ({ email }) => {
       console.error("Error updating expense:", error.message);
     }
   };
-
+  const handleAddExpenseClick = () => {
+    if (bal > 0) {
+      setMsg(""); 
+      setOpen(true);
+    } else {
+      setMsg("Insufficient balance. You can't add an expense.");
+    }
+  };
   return (
     <div>
       <Header />
-      <div className="flex items-center justify-center min-h-screen bg-amber-200 p-4">
-        <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl h-auto mx-auto">
+      <div className="flex items-center justify-center min-h-screen bg-white p-4">
+        <div className="bg-blue-400 shadow-lg rounded-lg p-8 w-full max-w-4xl h-auto mx-auto">
           <div className="grid grid-cols-2 gap-8">
             <div className="mb-4">
-              <label className="block text-orange-800 text-xl font-bold mb-2" htmlFor="income">
+              <label className="block text-white text-xl font-bold mb-2" htmlFor="income">
                 Income
               </label>
               <input
                 id="income"
                 type="number"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-indigo-700 leading-tight focus:outline-none focus:shadow-outline"
                 value={income}
                 onChange={handleIncomeChange}
               />
               <button
                 onClick={updateBalance}
-                className="mt-2 px-4 py-2 font-bold text-white bg-orange-800 rounded-lg hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="mt-2 px-4 py-2 font-bold text-indigo-700 bg-white rounded-lg hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:bg-indigo-100"
               >
                 Add Income
               </button>
             </div>
             <div className="mb-4">
-              <label className="block text-orange-800 text-xl font-bold mb-2" htmlFor="balance">
+              <label className="block text-white text-xl font-bold mb-2" htmlFor="balance">
                 Balance
               </label>
               <input
                 id="balance"
                 type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-indigo-700 leading-tight focus:outline-none focus:shadow-outline"
                 value={bal}
                 readOnly
               />
             </div>
             <div className="flex space-x-10">
-              <h1 className="text-left text-xl text-orange-800 font-bold">Expenses</h1>
-              <AddCircleOutlineOutlinedIcon onClick={() => setOpen(true)} />
+              <h1 className="text-left text-xl text-white font-bold">Expenses</h1>
+              <AddCircleOutlineOutlinedIcon onClick={handleAddExpenseClick} />
             </div>
           </div>
+          {msg && <p className="text-red-500">{msg}</p>}
           {isOpen && <Modal setOpen={setOpen} onSave={handleSave} />}
           <ExpenseList 
             expenseList={expenseList} 
             fetchExpenses={fetchExpenses} 
             setEditingExpense={setEditingExpense} 
             email={email}
-            handleExpenseUpdate={handleExpenseUpdate}
             bal={bal}
+            setBal={setBal}
           />
           {editingExpense && (
             <Modal
               setOpen={setOpen}
               onSave={(updatedExpense) => handleUpdate(editingExpense._id, updatedExpense)}
               expense={editingExpense}
+            
             />
           )}
         </div>
@@ -183,4 +195,4 @@ const ExpensePage = ({ email }) => {
   );
 };
 
-export default ExpensePage;
+export default Expensepage;
