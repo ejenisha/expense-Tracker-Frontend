@@ -10,7 +10,7 @@ const ExpensePage = ({ email }) => {
   const [expenseList, setExpenseList] = useState([]);
   const [editingExpense, setEditingExpense] = useState(null);
   const [bal, setBal] = useState(0); // Initialize balance to 0
-  const [income, setIncome] = useState("0"); 
+  const [income, setIncome] = useState("0");
   const [msg, setMsg] = useState(""); // Initialize message state
 
   // Function to fetch expenses and balance from the server
@@ -58,18 +58,20 @@ const ExpensePage = ({ email }) => {
       const response = await axios.get("http://localhost:8000/api/v1/exp", { headers: { email } });
       const updatedExpenses = response.data.exp;
 
-      // Recalculate the total expenses
-      const total = updatedExpenses.reduce((sum, item) => sum + item.amount, 0);
-      const newBalance = bal - total;
-      if (newBalance < 0) {
-        setMsg("Insufficient balance");
-        setBal(0);
-      } else {
-        setBal(newBalance);
-      }
+      if (updatedExpenses.length > 0) {
+        const lastExpense = updatedExpenses[updatedExpenses.length - 1];
+        const newBalance = bal - lastExpense.amount;
 
-      // Update the balance in the backend
-      await axios.patch("http://localhost:8000/api/v1/user/updateBal", { balance: newBalance }, { headers: { email } });
+        if (newBalance < 0) {
+          setMsg("Insufficient balance");
+          setBal(0);
+        } else {
+          setBal(newBalance);
+        }
+
+        // Update the balance in the backend
+        await axios.patch("http://localhost:8000/api/v1/user/updateBal", { balance: newBalance }, { headers: { email } });
+      }
     } catch (error) {
       console.error("Error updating balance:", error.message);
     }
@@ -97,7 +99,7 @@ const ExpensePage = ({ email }) => {
       await axios.patch(`http://localhost:8000/api/v1/exp/${id}`, updatedExpense, { headers: { email } });
 
       // Fetch updated expenses
-      await fetchExpenses(); 
+      await fetchExpenses();
 
       // Calculate new balance
       const total = expenseList.reduce((sum, item) => sum + item.amount, 0);
@@ -166,6 +168,7 @@ const ExpensePage = ({ email }) => {
             setEditingExpense={setEditingExpense} 
             email={email}
             handleExpenseUpdate={handleExpenseUpdate}
+            bal={bal}
           />
           {editingExpense && (
             <Modal

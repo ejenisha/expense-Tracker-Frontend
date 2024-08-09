@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./ExpenseList.css";
 import axios from "axios";
 
-const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense, email, handleExpenseUpdate }) => {
+const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense, email,bal }) => {
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -53,7 +53,10 @@ const ExpenseList = ({ expenseList, fetchExpenses, setEditingExpense, email, han
       ) : (
         <p className="text-orange-800">No expenses available</p>
       )}
-      <h2 className="text-right mr-20 text-orange-800 text-xl font-bold">Total: {total}</h2>
+      <div className="flex justify-between">
+      <h2 className="text-right mr-20 text-orange-800 text-xl font-bold">Total Amount: {total+bal}</h2>
+      <h2 className="text-right mr-20 text-orange-800 text-xl font-bold">Amount Spent: {total}</h2>
+      </div>
     </div>
   );
 };
